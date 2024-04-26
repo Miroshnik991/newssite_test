@@ -15,7 +15,7 @@ services:
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     ports:
-      - '5306:3306'
+      - '5806:3306'
     volumes:
       - ./mysql:/var/lib/mysql
     networks:
@@ -38,13 +38,22 @@ services:
     restart: unless-stopped
     image: nginx:stable-alpine
     ports:
-      - '8080:80'
+      - '8050:80'
     volumes:
       - ./app:/var/www/app
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - app
       - database
+    networks:
+      - your-project-name
+
+  frontend:
+    build: ./frontend
+    ports:
+      - '3001:3000'
+    depends_on:
+      - app
     networks:
       - your-project-name
 
